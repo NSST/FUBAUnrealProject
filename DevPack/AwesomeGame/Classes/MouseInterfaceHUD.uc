@@ -49,6 +49,66 @@ event PostRender()
   DrawHUD();
 }
 
+function DrawHUD()
+{
+        local AwesomePlayerController AwesomePlayerController;
+        local int playerHealth;
+        local vector ScreenPos;
+        local int i;
+
+        AwesomePlayerController = AwesomePlayerController(PlayerOwner);
+        playerHealth = AwesomePlayerController.Pawn.Health;
+
+        Canvas.Font = class'Engine'.static.GetLargeFont();
+        Canvas.SetDrawColor(255, 255, 255); // White
+        Canvas.SetPos(1000, 675);
+        Canvas.DrawText(playerHealth);
+        
+        if(playerHealth < 10)
+        {
+        Canvas.SetDrawColor(255, 0, 0); // Red
+        }
+        else if (playerHealth < 20)
+        {
+        Canvas.SetDrawColor(255, 255, 0); // Yellow
+        }
+        else
+        {
+        Canvas.SetDrawColor(0, 255, 0); // Green
+        }
+
+       // Canvas.SetPos(1050, 675);
+       // Canvas.DrawRect(2 * playerHealth, 30);
+   //     Canvas.SetDrawColor(255, 0, 0);
+   //     Canvas.SetPos(MyGame.EnemySpawners[0].MySpawnedBot.Location.X, MyGame.EnemySpawners[0].MySpawnedBot.Location.Y );
+      // `log("!" @ MyGame.EnemySpawners[0].MySpawnedBot.Location.X @ MyGame.EnemySpawners[0].MySpawnedBot.Location.Y);
+  //      Canvas.DrawRect(5 * 100, 30);
+  
+
+
+        if(AwesomeGameReplicationInfo(WorldInfo.GRI) != none)
+        {
+        
+                 for (i = 0 ; i < 3 ; i++)
+                 {
+                ScreenPos = Canvas.Project(AwesomeGameReplicationInfo(WorldInfo.GRI).EnemyLocation[i]);
+                Canvas.SetPos(ScreenPos.X ,ScreenPos.Y - 20);
+                Canvas.SetDrawColor(255, 0, 0);
+                Canvas.DrawRect(0.5 * AwesomeGameReplicationInfo(WorldInfo.GRI).EnemyHealth[i], 5);
+              //  `log(AwesomeGameReplicationInfo(WorldInfo.GRI).EnemyHealth[i]);
+                 }
+
+
+        }
+
+
+//	Canvas.SetPos(ScreenPos.X ,ScreenPos.Y - 20);
+//	Canvas.SetDrawColor(255, 0, 0);
+//	Canvas.DrawRect(0.3 * MyGame.EnemySpawners[0].MySpawnedBot.Health, 5);
+
+
+}
+
 defaultproperties
 {
   CursorColor=(R=255,G=255,B=255,A=255)

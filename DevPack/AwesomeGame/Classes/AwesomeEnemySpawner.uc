@@ -2,6 +2,7 @@ class AwesomeEnemySpawner extends AwesomeActor
 placeable;
 
 var AwesomeBot MySpawnedBot;
+var int ID;
 
 defaultproperties
 {
@@ -13,6 +14,7 @@ defaultproperties
 
         Components.Add(Sprite)
 
+
 }
 
 function SpawnEnemy()
@@ -20,6 +22,8 @@ function SpawnEnemy()
 
         MySpawnedBot = spawn(class'AwesomeBot', self,,Location);
         MySpawnedBot.SetOwner(self);
+        MySpawnedBot.BotID = ID;
+       // `log(ID);
 
 }
 

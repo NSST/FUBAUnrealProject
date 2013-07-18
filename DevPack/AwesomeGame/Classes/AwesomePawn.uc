@@ -13,14 +13,6 @@ replication
         bWalking ;
 }
 
-event Bump(Actor Other, PrimitiveComponent OtherComp, vector
-HitNormal)
-{
-super.Bump(Other, OtherComp,HitNormal);
-`log("Bump!");
-
-}
-
     //Returns Aim Rotation
 simulated singular event Rotator GetBaseAimRotation()
 {
