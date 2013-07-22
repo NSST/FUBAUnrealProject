@@ -1,7 +1,9 @@
 class CyberGame extends UTDeathmatch;
 
+//Hold all the factories
 var array<EnemyFactory> EnemySpawners;
 
+//Declare Bot types
 enum Type {
 
 	BLUE_BOT,
@@ -11,33 +13,38 @@ enum Type {
 
 };
 
+//Initialize necessary variables
 defaultproperties
 {
 
-          PlayerControllerClass=class'CyberPlayerController'
-          HUDType=class'MouseInterfaceHUD'
-          DefaultPawnClass=class'AwesomePawn'
-          GameReplicationInfoClass=class'AwesomeGameReplicationInfo'
+        PlayerControllerClass = class 'CyberPlayerController'
+        HUDType = class 'MouseInterfaceHUD'
+        DefaultPawnClass = class 'AwesomePawn'
+        GameReplicationInfoClass = class 'AwesomeGameReplicationInfo'
 
-          bUseClassicHUD=true
-          bDelayedStart=false
+        bUseClassicHUD = true
+        bDelayedStart = false
 }
 
+//Loading functions before playing
 function PostBeginPlay()
-{
-                local EnemyFactory EF;
+{       
 
-                super.PostBeginPlay();
+        local EnemyFactory EF;
 
+        super.PostBeginPlay();
+                
+                //Find all factories on map and load them into a dynamic array
                 foreach DynamicActors(class'EnemyFactory', EF)
                         EnemySpawners[EnemySpawners.length] = EF;
 
                 ActivateSpawners();
 }
 
+
+//Make factory spawns enemies randomly
 function ActivateSpawners()
 {
-
         local int i;
 
         for(i=0; i<EnemySpawners.length; i++)
@@ -46,5 +53,5 @@ function ActivateSpawners()
                  EnemySpawners[i].SpawnEnemyRandomly();
         }
 
-
 }
+

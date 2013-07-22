@@ -5,7 +5,7 @@ placeable;
 
 var Enemy MySpawnedBot;
 var int ID;
-var () array<NavigationPoint> MyNavigationPoints;
+var () array<NavigationPoint> MyNavigationPoints;//for patrol route
 
 enum Type {
 
@@ -16,6 +16,7 @@ enum Type {
 
 };
 
+//initialize
 defaultproperties
 {
 
@@ -72,7 +73,7 @@ function SpawnEnemyRandomly()
 
         RandomNumber = Rand(3);
 
-        SpawnEnemy(Type.RED_BOT);
+        SpawnEnemy(Type.BLUE_BOT);
 }
 
 

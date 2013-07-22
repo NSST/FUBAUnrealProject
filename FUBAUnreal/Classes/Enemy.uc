@@ -27,6 +27,7 @@ var int HP;
 var float AttackDistance;
 var bool isDead;
 
+//compute health bar
 event TakeDamage(int DamageAmount, Controller EventInstigator,
 vector HitLocation, vector Momentum, class<DamageType> DamageType,
 optional TraceHitInfo HitInfo, optional Actor DamageCauser)
@@ -48,13 +49,13 @@ defaultproperties()
 {
  isDead = false;
 }
-
+//display for others to see
 replication
 {
         if(bNetDirty)
         Enemy,HP,BotID,FullBodyRep,isDead;
 }
-
+//kill the player
 function Killed()
 {
         isDead = true;
@@ -62,7 +63,7 @@ function Killed()
         SetTimer(4, false, 'resurrect');
 
 }
-
+//for respawn
 function resurrect()
 {
         setHidden(false);
@@ -144,7 +145,7 @@ simulated event ReplicatedEvent(name VarName)
         }
 
 }
-
+//initialize animation
 simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 {
 	super.PostInitAnimTree(SkelComp);
@@ -160,7 +161,7 @@ function Attack(Actor target)
 
 }
 
-
+//initalize play
 simulated function PostBeginPlay()
 {
 

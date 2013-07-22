@@ -8,6 +8,7 @@ defaultproperties
 
 }
 
+//used to replicate for everyone to see
 replication
 {
         if(bNetDirty)

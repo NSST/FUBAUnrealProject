@@ -1,3 +1,4 @@
+/* Render mouse cursor and user HUD. Display player information (blood, position ..). */
 class MouseInterfaceHUD extends HUD;
 
 // The texture which represents the cursor on the screen

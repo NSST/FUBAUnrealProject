@@ -20,13 +20,14 @@ RemoteRole=ROLE_SimulatedProxy
 bPreciseDestination = False;
 
 }
-
+//allow AI to work
 event Possess(Pawn inPawn, bool bVehicleTransition)
 {
     super.Possess(inPawn, bVehicleTransition); 
     Pawn.SetMovementPhysics();
 }
 
+//function used to move to destination
 function moveToTarget(vector aLocation) {
 	local rotator directionVector;
 
@@ -38,7 +39,7 @@ function moveToTarget(vector aLocation) {
 	targetDirection *= 1000;
 }
 
-
+//fuction to die
 function Suicide()
 {
         local UTProj_Rocket MyRocket;
@@ -47,6 +48,7 @@ function Suicide()
         MyRocket.Init(normal(Enem.Location - Pawn.Location));
 }
 
+//patrol from A to B
 auto state Patrolling1
 {
 
@@ -107,6 +109,7 @@ auto state Patrolling1
 
 }
 
+//reverse B to A
 state Patrolling2
 {
 
@@ -165,8 +168,7 @@ state Patrolling2
 
 }
 
-
-
+//path fiding for bot
 function bool FindNavMeshPath(Actor target)
 {
 
@@ -186,6 +188,7 @@ function bool FindNavMeshPath(Actor target)
 	return NavigationHandle.FindPath();
 }
 
+//move and attack
 state Moving
 {
 
@@ -197,7 +200,7 @@ state Moving
                 GetEnemy();
                 
                 if (Enemy(Pawn).isDead)
-                GoToState('Patrolling');
+                GoToState('Patrolling1');
 
 
 		if( !ActorReachable(Enem) )
@@ -260,7 +263,7 @@ state Moving
 
 }
 
-
+//bot attact
 function PawnFire()
 {
 
@@ -279,6 +282,7 @@ function PawnFire()
 
 }
 
+//initialize animation tree
 simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
 {
 	super.PostInitAnimTree(SkelComp);
@@ -288,6 +292,7 @@ simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
         }
 }
 
+//move to vector
 function MoveToVector(float DeltaTime, Vector destination,float Speed)
 {
 
@@ -300,6 +305,7 @@ function MoveToVector(float DeltaTime, Vector destination,float Speed)
                   moveToTarget(destination);
 }
 
+//test fuction
 function MoveAwayFromVector(float DeltaTime, Vector destination,float Speed)
 {
 
@@ -312,8 +318,7 @@ function MoveAwayFromVector(float DeltaTime, Vector destination,float Speed)
                   moveToTarget(Enem.Location);
 }
 
-
-
+//get enemy
  function GetEnemy()
 {
 
