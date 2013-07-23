@@ -10,6 +10,8 @@ var Vector WorldOrigin;
 var Vector WorldDirection;
 var Vector2D    MousePosition;
 var Vector test;
+var STGFxHUD HudMovie;
+var bool bIsInventoryOpen;
 
 event PostRender()
 {
@@ -115,6 +117,47 @@ defaultproperties
   CursorColor=(R=255,G=255,B=255,A=255)
   CursorTexture=Texture2D'EngineResources.Cursors.Arrow'
 
+  bIsInventoryOpen = false
+}
+
+//Called after game loaded - initialise things
+simulated function PostBeginPlay()
+{
+	super.PostBeginPlay();
+
+	//Create a STGFxHUD for HudMovie
+	HudMovie = new class'STGFxHUD';
+	//Set the HudMovie's PlayerOwner
+	HudMovie.PlayerOwner = CyberPlayerController(PlayerOwner);
+	//Set the timing mode to TM_Real - otherwide things get paused in menus
+	HudMovie.SetTimingMode(TM_Real);
+	//Call HudMovie's Initialise function
+	HudMovie.Init2(HudMovie.PlayerOwner);
+	HudMovie.hideInventory();
+}
+
+exec function showInventory()
+{
+	`log("[PlacementHUD].[showInventory] begins");
+	if(!bIsInventoryOpen)
+	{
+	        HudMovie.showInventory();
+        	bIsInventoryOpen = true;
+	}
+	
+	else 
+
+	{
+		HudMovie.hideInventory();
+        	bIsInventoryOpen = false;
+	}
+
+	`log("[PlacementHUD].[showInventory] ends");
+}
+
+function testFunction()
+{
+        `log('CONNECTED');
 }
 
 

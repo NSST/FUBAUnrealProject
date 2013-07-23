@@ -94,10 +94,11 @@ auto state Patrolling1
 
                 }
                 
-                if(VSize(Enem.Location - Pawn.Location) < 500.0 && !Enemy(Pawn).isDead)
+                if(VSize(Enem.Location - Pawn.Location) < 500.0 && VSize(Pawn.Owner.Location - Pawn.Location) < 800.0 )
                 {
 
                         GoToState('Moving');
+                        //`log("ABC");
 
                 }
 
@@ -241,7 +242,7 @@ state Moving
                   SetTimer(0.5, true, 'PawnFire');
                 }
                 
-                if(VSize(Pawn.Owner.Location - Pawn.Location) > 900.0 && !Enemy(Pawn).isDead)
+                if(VSize(Pawn.Owner.Location - Pawn.Location) > 900.0)
                 {
                        GoToState('Patrolling1');
                 }

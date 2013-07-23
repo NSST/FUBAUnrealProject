@@ -22,15 +22,19 @@ var Vector      MousePosWorldNormal;        //Hold deprojected mouse location no
  *  Calculated in Hud after mouse deprojection, uses MousePosWorldNormal as direction vector
  *  This is what calculated MouseHitWorldLocation and MouseHitWorldNormal.
  *
+ *  See Hud.PostRender, Mouse deprojection needs Canvas variable.
+ *  
  *  **/
 
-var Waypoint waypoint; //Control moving player
+var Waypoint waypoint;
 var Waypoint CursorDirection;
+var bool boo;
 
 
 var Vector DestinationXYLocation;
 var Vector PawnXYLocation;
 
+var Vector test;
 
 /**
  * The location the controller should move to (XXX 0,0,0 is 
@@ -44,17 +48,16 @@ var vector		targetLocation;
  */
 var vector		targetDirection;
 
-//Annouce changes to server for updating
 replication
 {
         if(bNetDirty)
         waypoint,CursorDirection;
 }
 
-
 defaultproperties
 {
         PlayerViewOffset=(X=-64,Y=0,Z=1024)
+        test = (X=300,Y=277,Z=60)
 
         InputClass=class'MouseInterfacePlayerInput'
 }
@@ -63,9 +66,11 @@ simulated function PostBeginPlay()
 {
         super.PostBeginPlay();
         bNoCrosshair = true;
+
+
+
 }
 
-//Change the view to top-down view
 simulated event GetPlayerViewPoint(out vector out_Location, out
 Rotator out_Rotation)
 {
@@ -128,7 +133,6 @@ function SpawnWaypoint()
 
 }
 
-//Mouse direction
 function SpawnCursorDirection()
 {
 
@@ -145,7 +149,7 @@ function SpawnCursorDirection()
        }
 
 }
-// method used to let character face mouse click
+
 function faceWaypoint()
 {
         local rotator r;
@@ -156,14 +160,13 @@ function faceWaypoint()
         return;
 
         temp = waypoint.Location;
-        temp.Z = 60;//for shooting in straight line
+        temp.Z = 60;
 
         v = temp - Pawn.Location;
         r = Rotator(v);
         Pawn.SetRotation(r);
 }
 
-//used for shooting face to mouse
 simulated function faceCursor()
 {
         local rotator r;
@@ -175,7 +178,7 @@ simulated function faceCursor()
         Pawn.SetRotation(r);
 }
 
-//method used to move from A to B
+
 function moveToTarget(vector aLocation) {
 	local rotator directionVector;
 
@@ -194,7 +197,6 @@ function moveToTarget(vector aLocation) {
 
 }
 
-//method to adjust aim
 simulated function Rotator GetAdjustedAimFor( Weapon W, vector StartFireLoc)
 {
 if (CursorDirection != none)
@@ -208,7 +210,7 @@ return Pawn.GetBaseAimRotation();
 
 
 }
-//Server method
+
 reliable server function ServerFire(Vector loc)
 {
  loc.Z = 60;
@@ -224,14 +226,14 @@ simulated function FireRocket()
     //    temp = CursorDirection.Location;
     //    temp.Z = 60;
     //    MyRocket = spawn(class'UTProj_Rocket', self,, Pawn.Location);
-    //  MyRocket.Damage = 5;
+    //  MyRocket.Damage = 5 ;
    //     MyRocket.Init(normal(temp - Pawn.Location));
 
    faceCursor();
 
   Pawn.StartFire(0);
 }
-//state to move player
+
 state PlayerWalking  {
 	/** Override for the non server situation */
 	function ProcessMove(float DeltaTime, vector NewAccel,
@@ -254,7 +256,7 @@ state PlayerWalking  {
 	}
 
 	/** Override for the non server situation */
-	function ReplicateMove (float DeltaTime, vector NewAccel,
+	function ReplicateMove (float DeltaTime, vector NewAccel, 
                                                 eDoubleClickDir DoubleClickMove,  
                                                   rotator DeltaRot) {
                 boo = false;
@@ -274,8 +276,7 @@ state PlayerWalking  {
 		}
 	}
 
-        //method used to shoot
-	simulated function StartFire(optional byte FireModeNum)
+	simulated exec function StartFire(optional byte FireModeNum)
 {
 
   // Initialise for the mouse over time funtionality
@@ -289,7 +290,7 @@ state PlayerWalking  {
 	        SpawnWaypoint();
 	        faceWaypoint();
 		targetLocation = waypoint.Location;
-		moveToTarget(waypoint.Location);//destination
+		moveToTarget(waypoint.Location);
 
 	}
 	if(bRightMousePressed)
