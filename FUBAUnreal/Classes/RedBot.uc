@@ -33,6 +33,7 @@ DefaultProperties
     WeaponSkeletalMesh=MyWeaponSkeletalMesh
     ControllerClass=class'BotAIController'
 
+    bBlockActors=false
     bJumpCapable=false
     bCanJump=false
     bCanStrafe=True

@@ -73,7 +73,7 @@ function SpawnEnemyRandomly()
 
         RandomNumber = Rand(3);
 
-        SpawnEnemy(Type.BLUE_BOT);
+        SpawnEnemy(RandomNumber);
 }
 
 

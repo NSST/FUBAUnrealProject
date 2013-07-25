@@ -131,18 +131,18 @@ reliable client function ClientPlayAnim(Name NewAnimSlot, Name NewAnimName, floa
 
 }
 
-// see how our shiny new var gets caught and replicated to everyone
+
 simulated event ReplicatedEvent(name VarName)
 
 {
 
-        if ( VarName == 'FullBodyRep')
+      //  if ( VarName == 'FullBodyRep')
 
-        {
+     //   {
 
         ClientPlayAnim('FullBodyAnimSlot', FullBodyRep.AnimName, FullBodyRep.Rate, FullBodyRep.BlendInTime, FullBodyRep.BlendOutTime, FullBodyRep.bLoop, FullBodyRep.Pawn);
 
-        }
+     //   }
 
 }
 //initialize animation

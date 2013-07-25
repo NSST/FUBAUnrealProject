@@ -32,6 +32,7 @@ DefaultProperties
     WeaponSkeletalMesh=MyWeaponSkeletalMesh
     ControllerClass=class'BotAIController'
 
+    bBlockActors=false
     bJumpCapable=false
     bCanJump=false
     GroundSpeed=200.0 //Making the bot slower than the player

@@ -1,4 +1,4 @@
-class BotAIController extends GameAIController;
+class GreenAIController extends GameAIController;
 
 var vector targetDirection;
 var vector targetLocation;
@@ -8,7 +8,7 @@ var() Vector TempDest;
 var Vector NextMoveLocation;
 var AnimNodeSlot FullBodyAnimSlot;
 var float AttackDistance;
-
+var int pos;
 
 DefaultProperties
 {
@@ -18,6 +18,7 @@ AttackDistance=800;
 NavigationHandleClass=class'NavigationHandle'
 RemoteRole=ROLE_SimulatedProxy
 bPreciseDestination = False;
+pos = 0;
 
 }
 //allow AI to work
@@ -49,7 +50,7 @@ function Suicide()
 }
 
 //patrol from A to B
-auto state Patrolling1
+state Patrolling1
 {
 
   	simulated  function Tick(float DeltaTime)
@@ -90,14 +91,15 @@ auto state Patrolling1
 
                 if(VSize(destination.Location - Pawn.Location) < 50.0 && !Enemy(Pawn).isDead)
                 {
-                        GoToState('Patrolling2');
+                        pos = 1;
+                        GoToState('Moving');
 
                 }
                 
                 if(VSize(Enem.Location - Pawn.Location) < 500.0 && VSize(Pawn.Owner.Location - Pawn.Location) < 800.0 )
                 {
 
-                        GoToState('Moving');
+                       // GoToState('Moving');
                         //`log("ABC");
 
                 }
@@ -152,12 +154,13 @@ state Patrolling2
 
                 if(VSize(destination.Location - Pawn.Location) < 50.0 && !Enemy(Pawn).isDead)
                 {
-                        GoToState('Patrolling1');
+                        pos = 0;
+                        GoToState('Moving');
 
                 }
 
                 if(VSize(Enem.Location - Pawn.Location) < 500.0 && !Enemy(Pawn).isDead)
-                        GoToState('Moving');
+                      //  GoToState('Moving');
 
 
 
@@ -190,7 +193,7 @@ function bool FindNavMeshPath(Actor target)
 }
 
 //move and attack
-state Moving
+auto state Moving
 {
 
 
@@ -203,65 +206,54 @@ state Moving
                 if (Enemy(Pawn).isDead)
                 GoToState('Patrolling1');
 
+                moveToTarget(Enem.Location);
 
-		if( !ActorReachable(Enem) )
-		{
-			if( FindNavMeshPath(Enem) )
-			{
-                                NavigationHandle.SetFinalDestination(Enem.Location);
-			// move to the first node on the path
-			     if( NavigationHandle.GetNextMoveLocation( TempDest, Pawn.GetCollisionRadius()) )
-			      {
-				// suggest move preparation will return TRUE when the edge's
-			    // logic is getting the bot to the edge point
-				if (!NavigationHandle.SuggestMovePreparation( TempDest,self))
-				    {
-				MoveToVector( DeltaTime,TempDest,300.0 );
-				    }
-
-			     }
-
-			
-                        }
-			else
-			{
-				//give up because the nav mesh failed to find a path
-				`warn("FindNavMeshPath failed to find a path to"@ Enem);
-				Enem = None;
-			}   
-		}
-		else
-		{
-			// then move directly to the actor
-			MoveToVector(DeltaTime,Enem.Location,300.0);
-		}
-
-
-                if(VSize(Pawn.Location - Enem.Location) < 100.0)
+               // SetTimer(1, false, 'strafe');
+                if(VSize(Enem.Location - Pawn.Location) > 800.0)
                 {
-                  SetTimer(0.5, true, 'PawnFire');
+                   SetTimer(0.5, true, 'PawnFire');
+                   SetTimer(5, true, 'strafe');
                 }
                 
-                if(VSize(Pawn.Owner.Location - Pawn.Location) > 900.0)
-                {
-                       GoToState('Patrolling1');
-                }
 
-   // `log(VSize(Pawn.Owner.Location - Pawn.Location ));
 
-                //Run animation
-                Enemy(Pawn).Run();
-                //super.Tick(DeltaTime);
+
 
         }
-        
+
         function EndState(name NextStateName)
         {
-        `log("STATE ENDED!");
+        //`log("STATE ENDED!");
         }
 
+function strafe()
+{
+    //    local int RandomNumber;
 
+   //     RandomNumber = Rand(2);
+   //
+   //     `log(RandomNumber);
+        
+        switch(pos)
+        {
+                case 0:
+                GoToState('Patrolling1');
+                break;
+                
+                case 1:
+                GoToState('Patrolling2');
+                break;
 
+        }
+
+}
+
+}
+
+function strafe()
+{
+ `log("STATE ENDED!");
+//GoToState('Patrolling1');
 }
 
 //bot attact

@@ -1,6 +1,8 @@
 class AwesomePawn extends UTPawn;
 
 var bool bWalking;
+var Item items[6];
+var int MAX_ITEMS;
 
 defaultproperties
 {
@@ -26,12 +28,62 @@ defaultproperties
         Components.Add(SandboxPawnSkeletalMesh)
 
         bWalking = false;
+        MAX_ITEMS = 6;
 }
 
 replication
 {
         if(bNetDirty)
         bWalking ;
+}
+
+function addItem(Item item)
+{
+        local int index;
+        
+        `log('CALLED');
+        for(index = 0; index < MAX_ITEMS ; index++)
+        {
+        
+                if(items[index] == none)
+                {
+
+                        items[index] = item;
+                        ClientAddItem(item);
+                            `log(items[0] @ ' INDEX 0');
+                            `log(items[1] @ ' INDEX 1');
+                            `log(items[2] @ ' INDEX 2');
+                        return;
+                }
+
+        }
+
+
+
+
+      //  if(Role < ROLE_Authority)
+
+}
+
+// tell the client to add them too
+reliable client function ClientAddItem(Item item)
+{
+
+        local int index;
+        
+        for(index = 0; index < MAX_ITEMS ; index++)
+        {
+        
+                if(items[index] == none)
+                {
+                        items[index] = item;
+                         return;
+                }
+
+        }
+        
+        //   `log('CLIENT ADDED ITEM' @ items[0]);
+
 }
 
 

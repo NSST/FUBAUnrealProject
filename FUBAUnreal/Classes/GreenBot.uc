@@ -31,10 +31,11 @@ DefaultProperties
     End Object
 
     WeaponSkeletalMesh=MyWeaponSkeletalMesh
-    ControllerClass=class'BotAIController'
+    ControllerClass=class'GreenAIController'
 
     bJumpCapable=false
     bCanJump=false
+    bBlockActors=false
     GroundSpeed=200.0 //Making the bot slower than the player
     HP = 100;
     AttackDistance=500.0
