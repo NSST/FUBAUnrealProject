@@ -199,10 +199,12 @@ state Moving
 
                 if(Enem == none)
                 GetEnemy();
-                
+
                 if (Enemy(Pawn).isDead)
                 GoToState('Patrolling1');
 
+                if(VSize(Enem.Location - Pawn.Location) > 200.0)
+                {
 
 		if( !ActorReachable(Enem) )
 		{
@@ -221,14 +223,14 @@ state Moving
 
 			     }
 
-			
+
                         }
 			else
 			{
 				//give up because the nav mesh failed to find a path
 				`warn("FindNavMeshPath failed to find a path to"@ Enem);
 				Enem = None;
-			}   
+			}
 		}
 		else
 		{
@@ -236,12 +238,23 @@ state Moving
 			MoveToVector(DeltaTime,Enem.Location,300.0);
 		}
 
+		Enemy(Pawn).Run();
 
-                if(VSize(Pawn.Location - Enem.Location) < 100.0)
+                }
+                else
+                {
+
+                moveToTarget(Enem.Location);
+
+                }
+
+
+
+                if(VSize(Enem.Location - Pawn.Location) > 400.0)
                 {
                   SetTimer(0.5, true, 'PawnFire');
                 }
-                
+
                 if(VSize(Pawn.Owner.Location - Pawn.Location) > 900.0)
                 {
                        GoToState('Patrolling1');
@@ -250,11 +263,11 @@ state Moving
    // `log(VSize(Pawn.Owner.Location - Pawn.Location ));
 
                 //Run animation
-                Enemy(Pawn).Run();
+               // Enemy(Pawn).Run();
                 //super.Tick(DeltaTime);
 
         }
-        
+
         function EndState(name NextStateName)
         {
         `log("STATE ENDED!");
