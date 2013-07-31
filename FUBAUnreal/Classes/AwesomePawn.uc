@@ -4,6 +4,26 @@ var bool bWalking;
 var Item items[6];
 var int MAX_ITEMS;
 
+//compute health bar
+event TakeDamage(int DamageAmount, Controller EventInstigator,
+vector HitLocation, vector Momentum, class<DamageType> DamageType,
+optional TraceHitInfo HitInfo, optional Actor DamageCauser)
+{
+
+
+        if(UTProj_Rocket(DamageCauser) != none)
+        {
+
+        }
+        
+        else
+        
+        {
+                 super.TakeDamage(DamageAmount, EventInstigator,HitLocation, Momentum,  DamageType,HitInfo, DamageCauser);
+        }
+
+}
+
 defaultproperties
 {
 	Begin Object Name=CollisionCylinder
@@ -35,6 +55,17 @@ replication
 {
         if(bNetDirty)
         bWalking ;
+}
+
+function AddDefaultInventory()
+{
+    InvManager.CreateInventory(class'AwesomeWeapon_RocketLauncher');
+}
+
+simulated event PostBeginPlay()
+{
+    super.PostBeginPlay();
+    AddDefaultInventory(); //GameInfo calls it only for players, so we have to do it ourselves for AI.
 }
 
 function addItem(Item item)
@@ -81,8 +112,6 @@ reliable client function ClientAddItem(Item item)
                 }
 
         }
-        
-        //   `log('CLIENT ADDED ITEM' @ items[0]);
 
 }
 

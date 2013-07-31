@@ -53,6 +53,11 @@ event PostRender()
   DrawHUD();
 }
 
+function test1()
+{
+
+}
+
 function DrawHUD()
 {
         local CyberPlayerController CyberPlayerController;
@@ -154,12 +159,6 @@ exec function showInventory()
 
 	`log("[PlacementHUD].[showInventory] ends");
 }
-
-function testFunction()
-{
-        `log('CONNECTED');
-}
-
 
 function Vector GetMouseWorldLocation()
 {

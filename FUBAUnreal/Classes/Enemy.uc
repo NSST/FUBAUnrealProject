@@ -45,6 +45,7 @@ optional TraceHitInfo HitInfo, optional Actor DamageCauser)
 
 }
 
+
 defaultproperties()
 {
  isDead = false;

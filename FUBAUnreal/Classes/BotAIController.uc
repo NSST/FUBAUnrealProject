@@ -72,7 +72,7 @@ auto state Patrolling1
 			// suggest move preparation will return TRUE when the edge's
 			// logic is getting the bot to the edge point
 			     if (!NavigationHandle.SuggestMovePreparation( TempDest,self))
-                                MoveToVector( DeltaTime,TempDest,MovementSpeed - 100 );
+                                MoveToVector( DeltaTime,TempDest,MovementSpeed + 100 );
 			}
 
                         }
@@ -85,7 +85,7 @@ auto state Patrolling1
 		else
 		{
 			// then move directly to the actor
-			MoveToVector(DeltaTime,destination.Location,MovementSpeed - 100);
+			MoveToVector(DeltaTime,destination.Location,MovementSpeed + 100);
 		}
 
                 if(VSize(destination.Location - Pawn.Location) < 50.0 && !Enemy(Pawn).isDead)
@@ -199,7 +199,7 @@ state Moving
 
                 if(Enem == none)
                 GetEnemy();
-
+                
                 if (Enemy(Pawn).isDead)
                 GoToState('Patrolling1');
 
@@ -223,21 +223,21 @@ state Moving
 
 			     }
 
-
+			
                         }
 			else
 			{
 				//give up because the nav mesh failed to find a path
 				`warn("FindNavMeshPath failed to find a path to"@ Enem);
 				Enem = None;
-			}
+			}   
 		}
 		else
 		{
 			// then move directly to the actor
 			MoveToVector(DeltaTime,Enem.Location,300.0);
 		}
-
+		
 		Enemy(Pawn).Run();
 
                 }
@@ -250,30 +250,19 @@ state Moving
 
 
 
+
                 if(VSize(Enem.Location - Pawn.Location) > 400.0)
                 {
                   SetTimer(0.5, true, 'PawnFire');
                 }
-
+                
                 if(VSize(Pawn.Owner.Location - Pawn.Location) > 900.0)
                 {
                        GoToState('Patrolling1');
                 }
 
-   // `log(VSize(Pawn.Owner.Location - Pawn.Location ));
-
-                //Run animation
-               // Enemy(Pawn).Run();
-                //super.Tick(DeltaTime);
 
         }
-
-        function EndState(name NextStateName)
-        {
-        `log("STATE ENDED!");
-        }
-
-
 
 }
 

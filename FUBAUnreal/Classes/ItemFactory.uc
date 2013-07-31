@@ -33,12 +33,12 @@ function SpawnItem(int EnemyTypeRequested)
         switch(EnemyTypeRequested)
         {
                 case Type.ARMOR_TYPE:
-                item = spawn(class'GreenItem', self,,Location);
+                item = spawn(class'GreenMedalItem', self,,Location);
                 item.SetOwner(self);
                 break;
                 
                 case Type.HELMET_TYPE:
-                item = spawn(class'RayGunItem', self,,Location);
+                item = spawn(class'RedMedalItem', self,,Location);
                 item.SetOwner(self);
                 break;
 

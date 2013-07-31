@@ -2,10 +2,7 @@ class BlueBot extends Enemy;
 
 DefaultProperties
 {
-	Begin Object Name=CollisionCylinder
-		CollisionRadius=+0025.000000
-		CollisionHeight=+0044.000000
-	End Object
+
 
     Begin Object Class=SkeletalMeshComponent Name=SandboxPawnSkeletalMesh
         SkeletalMesh=SkeletalMesh'CH_IronGuard_Male.Mesh.SK_CH_IronGuard_MaleA'
@@ -91,6 +88,7 @@ simulated function PostBeginPlay()
 
        if (Mesh != none && WeaponSkeletalMesh != none)
        Mesh.AttachComponentToSocket(WeaponSkeletalMesh, 'WeaponPoint');
+
 
 }
 

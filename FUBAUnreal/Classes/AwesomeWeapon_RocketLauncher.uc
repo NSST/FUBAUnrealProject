@@ -1,12 +1,10 @@
-class AwesomeWeapon_RocketLauncher extends UTWeapon;
+class AwesomeWeapon_RocketLauncher extends AwesomeWeapon;
 
 defaultproperties
 {
         Begin Object Name=PickupMesh
         SkeletalMesh=SkeletalMesh'WP_RocketLauncher.Mesh.SK_WP_RocketLauncher_3P'
         End Object
-
-        Components.Add(PickupMesh)
 
         AttachmentClass=class'UTGameContent.UTAttachment_RocketLauncher'
 
@@ -16,14 +14,6 @@ defaultproperties
         WeaponProjectiles(0)=class'UTProj_Rocket'
         WeaponProjectiles(1)=class'UTProj_Rocket'
 
-        AmmoCount=30
-        MaxAmmoCount=30
-
-
-}
-
-simulated function PostBeginPlay()
-{
-
-
+        AmmoCount=9999
+        MaxAmmoCount=9999
 }

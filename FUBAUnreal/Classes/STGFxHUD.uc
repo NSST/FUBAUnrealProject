@@ -61,7 +61,7 @@ asval.s = AwesomePawn(player).items[slot].type;
 args[0] = asval;
 
 asval.Type = AS_Number;
-asval.n = 38;
+asval.n = 4;
 args[1] = asval;
 
         switch(slot)
@@ -74,6 +74,19 @@ args[1] = asval;
                 GetVariableObject("root").Invoke("showSlot2",args );
                 break;
         }
+
+}
+
+function UpgradeWeapon(int grade)
+{
+
+local Pawn player;
+
+player = PlayerOwner.Pawn;
+
+AwesomeWeapon(player.Weapon).UpgradeWeapon(grade);
+
+`log('UPGRADED TO ' @ grade);
 
 }
 
@@ -96,6 +109,8 @@ function showItems()
 
         }
 }
+
+
 
 DefaultProperties
 {

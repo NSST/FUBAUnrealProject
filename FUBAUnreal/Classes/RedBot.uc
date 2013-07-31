@@ -2,10 +2,6 @@ class RedBot extends Enemy;
 
 DefaultProperties
 {
-	Begin Object Name=CollisionCylinder
-		CollisionRadius=+0025.000000
-		CollisionHeight=+0044.000000
-	End Object
 
     Begin Object Class=SkeletalMeshComponent Name=SandboxPawnSkeletalMesh
         SkeletalMesh=SkeletalMesh'CH_TwinSouls_Cine.Mesh.SK_CH_RedGuard_Custom'

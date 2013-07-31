@@ -2,6 +2,7 @@ Class Item extends Actor
 abstract;
 
 var string type;
+var int FireRate;
 
 event Touch(Actor Other, PrimitiveComponent OtherComp, vector
 HitLocation, vector HitNormal)
@@ -15,5 +16,13 @@ HitLocation, vector HitNormal)
 
         }
         
+
+}
+
+function PostBeginPlay()
+{
+
+        FireRate = 0.1;
+
 
 }
