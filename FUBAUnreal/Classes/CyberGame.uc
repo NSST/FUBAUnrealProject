@@ -14,6 +14,37 @@ enum Type {
 
 };
 
+event InitGame( string Options, out string ErrorMessage )
+{
+    Super.InitGame(Options, ErrorMessage);
+    BroadcastHandler = spawn(BroadcastHandlerClass);
+}
+
+event Broadcast( Actor Sender, coerce string Msg, optional name btype )
+{
+    local CyberPlayerController PC;
+    local PlayerReplicationInfo PRI;
+
+    // This code gets the PlayerReplicationInfo of the sender. We'll use it to get the sender's name with PRI.PlayerName
+    if ( Pawn(Sender) != None )
+        PRI = Pawn(Sender).PlayerReplicationInfo;
+    else if ( Controller(Sender) != None )
+	PRI = Controller(Sender).PlayerReplicationInfo;
+	
+	// This line executes a "Say"
+    BroadcastHandler.Broadcast(Sender,Msg,btype);
+
+   // This is where we broadcast the received message to all players (PlayerControllers)
+    if (WorldInfo != None)
+    {
+	foreach WorldInfo.AllControllers(class'CyberPlayerController',PC)
+	{
+	    `Log(Self$":: Sending "$PC$" a broadcast message from "$PRI.PlayerName$" which is '"$Msg$"'.");
+	     PC.ReceiveBroadcast(PRI.PlayerName, Msg);
+	}
+    }
+}
+
 //Initialize necessary variables
 defaultproperties
 {
@@ -22,6 +53,7 @@ defaultproperties
         HUDType = class 'MouseInterfaceHUD'
         DefaultPawnClass = class 'AwesomePawn'
         GameReplicationInfoClass = class 'AwesomeGameReplicationInfo'
+        BroadcastHandlerClass=class'Engine.BroadcastHandler'
 
         bUseClassicHUD = true
         bDelayedStart = false

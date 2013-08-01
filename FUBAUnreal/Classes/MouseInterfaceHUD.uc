@@ -143,6 +143,10 @@ simulated function PostBeginPlay()
 
 exec function showInventory()
 {
+
+        if(!HudMovie.bInputFocused)
+        return;
+
 	`log("[PlacementHUD].[showInventory] begins");
 	if(!bIsInventoryOpen)
 	{
@@ -178,4 +182,27 @@ function Vector GetMouseWorldLocation()
   Trace(HitLocation, HitNormal, MouseWorldOrigin + MouseWorldDirection * 65536.f, MouseWorldOrigin , true,,, TRACEFLAG_Bullet);
   return HitLocation;
 }
+
+exec function Send()
+{
+      //  HudMovie. RequestInputMessage();
+      //  CyberPlayerController(PlayerOwner).SendTextToServer(CyberPlayerController(PlayerOwner), HudMovie.messageHolder);
+       HudMovie.getFocus();
+       HudMovie.checkFocus();
+
+       if(HudMovie.bInputFocused)
+       {
+        HudMovie. RequestInputMessage();
+        CyberPlayerController(PlayerOwner).SendTextToServer(CyberPlayerController(PlayerOwner), HudMovie.messageHolder);
+        HudMovie.TurnOffFocus();
+       }
+       else
+       {
+       HudMovie.TurnOnFocus();
+       }
+
+}
+
+
+
 

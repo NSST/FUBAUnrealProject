@@ -7,17 +7,26 @@ event PlayerInput(float DeltaTime)
 {
   // Handle mouse
   // Ensure we have a valid HUD
-  if (myHUD != None) 
+  if (myHUD != None)
   {
     // Add the aMouseX to the mouse position and clamp it within the viewport width
-    MousePosition.X = Clamp(MousePosition.X + aMouseX, 0, myHUD.SizeX); 
+    MousePosition.X = Clamp(MousePosition.X + aMouseX, 0, myHUD.SizeX);
     // Add the aMouseY to the mouse position and clamp it within the viewport height
-    MousePosition.Y = Clamp(MousePosition.Y - aMouseY, 0, myHUD.SizeY); 
-    
+    MousePosition.Y = Clamp(MousePosition.Y - aMouseY, 0, myHUD.SizeY);
 
   }
+        
+        //If player is chatting, ignore key bindings
+        if(!MouseInterfaceHUD(myHUD).HudMovie.bInputFocused)
+        {
+        
+       // `log(MouseInterfaceHUD(myHUD).HudMovie.bInputFocused);
+        return;
 
-  Super.PlayerInput(DeltaTime);
+        }
+        else
+
+        Super.PlayerInput(DeltaTime);
 }
 
 defaultproperties

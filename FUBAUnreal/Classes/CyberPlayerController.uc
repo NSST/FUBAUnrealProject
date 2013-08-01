@@ -3,7 +3,7 @@ class CyberPlayerController extends UTPlayerController;
 var vector PlayerViewOffset;
 var bool bLeftMousePressed; //leftmouse button
 var bool bRightMousePressed; //rightmouse button
-
+var STGFxHUD CyberHUD; //Hold the HUD
 
 var rotator CurrentCameraRotation;
 var vector destination;
@@ -62,6 +62,13 @@ simulated function PostBeginPlay()
 
 }
 
+function registerHUD(STGFxHUD hud)
+{
+        CyberHUD = hud;
+}
+
+
+
 simulated event GetPlayerViewPoint(out vector out_Location, out
 Rotator out_Rotation)
 {
@@ -89,11 +96,8 @@ event PlayerTick( float deltaTime )
 {
 
 	super.PlayerTick( deltaTime );
-//	`log(MouseHitWorldLocation);
 	FaceCursor(MouseHitWorldLocation);
 	Pawn.ClientSetRotation(Rotator(MouseHitWorldLocation - Pawn.Location));
-//	Pawn.StartFire(0);
-
 
 }
 
@@ -135,15 +139,12 @@ state PlayerWalking
 	if(bRightMousePressed)
         {
         bAttack = true;
+       // SendTextToServer(self, "HELLO WORLD!");
         Fire();
         }
 
 }
 }
-
-
-
-
 
 function UpdateRotation(float DeltaTime){
 
@@ -160,7 +161,6 @@ return Rotator(CursorDirection.Location - Pawn.Location);
 }
 else
 {
-`log('asasddasasd');
 return Pawn.Rotation;
 }
 
@@ -195,8 +195,24 @@ reliable server function ServerFire(Vector loc)
 {
  loc.Z = 60;
  CursorDirection = spawn(class'Waypoint', self,,loc);
- //FaceCursor(CursorDirection.Location);
  Pawn.StartFire(0);
+}
+
+exec function SendTextToServer(CyberPlayerController PC, String TextToSend)
+{
+	`Log(Self$":: Client wants to send '"$TextToSend$"' to the server.");
+	ServerReceiveText(PC, TextToSend);
+}
+
+reliable server function ServerReceiveText(CyberPlayerController PC, String ReceivedText)
+{
+    WorldInfo.Game.Broadcast(PC, ReceivedText, 'Say');
+}
+
+reliable client function ReceiveBroadcast(String PlayerName, String ReceivedText)
+{
+    `Log(Self$":: The Server sent me '"$ReceivedText$"' from "$PlayerName$".");
+     CyberHUD.UpdateChatLog(PlayerName @ ": " @ ReceivedText);
 }
 
 
