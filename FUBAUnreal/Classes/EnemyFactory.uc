@@ -6,6 +6,7 @@ placeable;
 var Enemy MySpawnedBot;
 var int ID;
 var () array<NavigationPoint> MyNavigationPoints;//for patrol route
+var () bool isSpecial;
 
 enum Type {
 
@@ -74,6 +75,20 @@ function SpawnEnemyRandomly()
         RandomNumber = Rand(3);
 
         SpawnEnemy(RandomNumber);
+}
+
+function SpawnBoss()
+{
+                MySpawnedBot = spawn(class'Boss', self,,Location);
+                MySpawnedBot.SetOwner(self);
+                MySpawnedBot.setHidden(true);
+                MySpawnedBot.isDead = true;
+}
+
+function activateBoss()
+{
+        MySpawnedBot.setHidden(false);
+        MySpawnedBot.isDead = false;
 }
 
 

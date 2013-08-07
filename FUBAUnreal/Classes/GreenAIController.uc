@@ -266,12 +266,22 @@ function PawnFire()
         if (IsInState('Patrolling2')) //this gives error
                 return;
 
+        if(Pawn != none)
+        {
+                if(Boss(Pawn).isDead)
+                return;
+        } else
+        return;
+
+
         if (RedBot(Pawn) != none)
                 RedBot(Pawn).Attack(Enem);
         if (BlueBot(Pawn) != none)
                 BlueBot(Pawn).Attack(Enem);
         if (GreenBot(Pawn) != none)
                 GreenBot(Pawn).Attack(Enem);
+        if (Boss(Pawn) != none)
+                Boss(Pawn).Attack(Enem);
 
 }
 

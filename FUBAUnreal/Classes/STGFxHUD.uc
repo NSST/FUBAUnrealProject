@@ -5,6 +5,7 @@ var CyberPlayerController PlayerOwner;
 var int MAX_ITEMS;
 var String messageHolder;
 var bool bInputFocused;
+var TextureRenderTarget2D RearViewRT;
 
 
 //Called from STHUD'd PostBeginPlay()
@@ -23,6 +24,13 @@ function Init2(CyberPlayerController PC)
        // bInputFocused = false;
 
 }
+
+function setRenderTexture()
+{
+        setExternalTexture("rearviewmirror",RearViewRT);
+        `log('CALLEDDDDDDDDDDD');
+}
+
 
 //Check if txtbox is focused, if not, focus
 function checkFocus()
@@ -93,9 +101,10 @@ function TurnOnFocus()
 
 
 //Setter for bInputFocused
+//Set by Flash object.Called by actionscript
 function setbInputFocused(bool isFocused)
 {
-        `log('Called');
+
         bInputFocused = isFocused;
 
 }
@@ -189,7 +198,7 @@ function showItems()
         {
                 if(AwesomePawn(player).items[i] != none)
                 {
-                      //   `log('NOT FOUND IT AAT ' @ i);
+                         `log('FOUND IT AAT ' @ i);
                        renderItems(i);
 
                 }
@@ -203,45 +212,46 @@ function RetrieveInputMessage(optional String message)
 }
 function UpdateChatLog(String message)
 {
-local array<ASValue> args;
-local ASValue asval;
+        local array<ASValue> args;
+        local ASValue asval;
 
-asval.Type = AS_String;
-asval.s = message;
-args[0] = asval;
+        asval.Type = AS_String;
+        asval.s = message;
+        args[0] = asval;
 
-asval.Type = AS_Number;
-asval.n = 4;
-args[1] = asval;
+        asval.Type = AS_Number;
+        asval.n = 4;
+        args[1] = asval;
 
-GetVariableObject("root").Invoke("UpdateChatLog",args );
+        GetVariableObject("root").Invoke("UpdateChatLog",args );
 
 }
 
 function RequestInputMessage()
 {
-local array<ASValue> args;
-local ASValue asval;
+        local array<ASValue> args;
+        local ASValue asval;
 
-asval.Type = AS_String;
-asval.s = "ABC";
-args[0] = asval;
+        asval.Type = AS_String;
+        asval.s = "ABC";
+        args[0] = asval;
 
-asval.Type = AS_Number;
-asval.n = 4;
-args[1] = asval;
+        asval.Type = AS_Number;
+        asval.n = 4;
+        args[1] = asval;
 
-GetVariableObject("root").Invoke("GetMessageInput",args );
+        GetVariableObject("root").Invoke("GetMessageInput",args );
 }
 
 
 
 DefaultProperties
 {
- //this is the HUD. If the HUD is off, then this should be off
- bDisplayWithHudOff=false
- //The path to the swf asset we will create later
- MovieInfo=SwfMovie'Hotshot.Inventory'
- bInputFocused = true;
- MAX_ITEMS = 6;
+        //this is the HUD. If the HUD is off, then this should be off
+        bDisplayWithHudOff=false
+        //The path to the swf asset we will create later
+        MovieInfo=SwfMovie'Hotshot.Inventory'
+        bInputFocused = true;
+        MAX_ITEMS = 6;
+        RearViewRT = TextureRenderTarget2D'Hotshot.RearViewRT'
 }

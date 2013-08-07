@@ -32,14 +32,22 @@ event TakeDamage(int DamageAmount, Controller EventInstigator,
 vector HitLocation, vector Momentum, class<DamageType> DamageType,
 optional TraceHitInfo HitInfo, optional Actor DamageCauser)
 {
-
+        
+        if(isDead)
+        return;
 
         HP -= 10;
 
-        if(HP<= 0 && EnemyFactory(Owner) != none)
+        if(HP <= 0 && EnemyFactory(Owner) != none)
         {
-               Killed();
+                //Score point
+                 if(EventInstigator != none && EventInstigator.PlayerReplicationInfo != none)
+                        WorldInfo.Game.ScoreObjective(EventInstigator.PlayerReplicationInfo, 1);
+                
+                //
+                 Killed();
         }
+
         
 
 

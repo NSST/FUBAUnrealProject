@@ -41,6 +41,8 @@ var vector		targetLocation;
 var vector		targetDirection;
 var bool bAttack;
 
+var SceneCapture2DActor Camera;
+
 replication
 {
         if(bNetDirty)
@@ -56,8 +58,13 @@ defaultproperties
 
 simulated function PostBeginPlay()
 {
+        local SceneCapture2DActor C;
 
         super.PostBeginPlay();
+        
+        foreach DynamicActors(class'SceneCapture2DActor', C)
+                Camera = C;
+
         bNoCrosshair = true;
 
 }
@@ -107,7 +114,7 @@ state PlayerWalking
         function PlayerMove(float DeltaTime)
         {
 
-        local vector X, Y, Z, AltAccel;
+        local vector X, Y, Z, AltAccel,temp;
         local rotator OldRotation;
 
         GetAxes(CurrentCameraRotation, X, Y, Z);
@@ -118,6 +125,11 @@ state PlayerWalking
         OldRotation = Rotation;
 
         UpdateRotation(DeltaTime);
+        
+        temp = Camera.Location;
+        temp.X = Pawn.Location.X - 400;
+        temp.Y = Pawn.Location.Y;
+        Camera.SetLocation(temp);
 
         if(Role < ROLE_Authority)
         ReplicateMove(DeltaTime, AltAccel, DCLICK_None,OldRotation - Rotation);

@@ -13,17 +13,20 @@ var Vector test;
 var STGFxHUD HudMovie;
 var bool bIsInventoryOpen;
 
+
 event PostRender()
 {
 
   local MouseInterfacePlayerInput MouseInterfacePlayerInput;
   local CyberPlayerController CyberPlayerController;
 
+
+
   // Ensure that we have a valid PlayerOwner and CursorTexture
   if (PlayerOwner != None && CursorTexture != None) 
   {
     // Cast to get the MouseInterfacePlayerInput
-    MouseInterfacePlayerInput = MouseInterfacePlayerInput(PlayerOwner.PlayerInput); 
+    MouseInterfacePlayerInput = MouseInterfacePlayerInput(PlayerOwner.PlayerInput);
 
     if (MouseInterfacePlayerInput != None)
     {
@@ -53,10 +56,6 @@ event PostRender()
   DrawHUD();
 }
 
-function test1()
-{
-
-}
 
 function DrawHUD()
 {
@@ -86,33 +85,23 @@ function DrawHUD()
         Canvas.SetDrawColor(0, 255, 0); // Green
         }
 
-        Canvas.SetPos(1050, 675);
-        Canvas.DrawRect(2 * playerHealth, 30);
-   //     Canvas.SetDrawColor(255, 0, 0);
-   //     Canvas.SetPos(MyGame.EnemySpawners[0].MySpawnedBot.Location.X, MyGame.EnemySpawners[0].MySpawnedBot.Location.Y );
-      // `log("!" @ MyGame.EnemySpawners[0].MySpawnedBot.Location.X @ MyGame.EnemySpawners[0].MySpawnedBot.Location.Y);
-  //      Canvas.DrawRect(5 * 100, 30);
-
+        Canvas.SetPos(300, 675);
+        Canvas.DrawRect(6 * playerHealth, 30);
 
         if(AwesomeGameReplicationInfo(WorldInfo.GRI) != none)
         {
-        
+
                  for (i = 0 ; i < 3 ; i++)
                  {
                  ScreenPos = Canvas.Project(AwesomeGameReplicationInfo(WorldInfo.GRI).EnemyLocation[i]);
                  Canvas.SetPos(ScreenPos.X ,ScreenPos.Y - 20);
                  Canvas.SetDrawColor(255, 0, 0);
                  Canvas.DrawRect(0.5 * AwesomeGameReplicationInfo(WorldInfo.GRI).EnemyHealth[i], 5);
-             //   `log(AwesomeGameReplicationInfo(WorldInfo.GRI).EnemyHealth[i]);
                  }
 
 
         }
 
-
-//	Canvas.SetPos(ScreenPos.X ,ScreenPos.Y - 20);
-//	Canvas.SetDrawColor(255, 0, 0);
-//	Canvas.DrawRect(0.3 * MyGame.EnemySpawners[0].MySpawnedBot.Health, 5);
 
 
 }
@@ -123,6 +112,7 @@ defaultproperties
   CursorTexture=Texture2D'EngineResources.Cursors.Arrow'
 
   bIsInventoryOpen = false
+
 }
 
 //Called after game loaded - initialise things
