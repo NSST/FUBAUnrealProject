@@ -1,0 +1,15 @@
+cursor_mc
+=========
+onClipEvent(enterFrame)
+{
+		_x=_root._xmouse;
+		_y=_root._ymouse;
+}
+
+
+LogInButton
+===========
+on(press)
+{
+	fscommand("loadmap");
+}
