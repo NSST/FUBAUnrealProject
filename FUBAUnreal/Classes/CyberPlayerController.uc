@@ -42,6 +42,7 @@ var vector		targetDirection;
 var bool bAttack;
 
 var SceneCapture2DActor Camera;
+var () array<Arrow> Arrows;//for patrol route
 
 replication
 {
@@ -66,8 +67,9 @@ simulated function PostBeginPlay()
                 Camera = C;
 
         bNoCrosshair = true;
-
 }
+
+
 
 function registerHUD(STGFxHUD hud)
 {
@@ -129,6 +131,7 @@ state PlayerWalking
         temp = Camera.Location;
         temp.X = Pawn.Location.X - 400;
         temp.Y = Pawn.Location.Y;
+
         Camera.SetLocation(temp);
 
         if(Role < ROLE_Authority)
@@ -157,6 +160,8 @@ state PlayerWalking
 
 }
 }
+
+
 
 function UpdateRotation(float DeltaTime){
 

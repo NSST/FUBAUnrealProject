@@ -9,15 +9,6 @@ var MU_Minimap GameMinimap;
 //Hold wave information
 var int EnemiesLeft;
 
-//Declare Bot types
-enum Type {
-
-	BLUE_BOT,
-	GREEN_BOT,
-	RED_BOT,
-	BOSS_TYPE,
-
-};
 
 //Scoring
 function ScoreObjective(PlayerReplicationInfo Scorer, Int Score)

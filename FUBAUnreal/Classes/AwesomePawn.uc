@@ -4,6 +4,8 @@ var bool bWalking;
 var Item items[6];
 var int MAX_ITEMS;
 
+
+
 //compute health bar
 event TakeDamage(int DamageAmount, Controller EventInstigator,
 vector HitLocation, vector Momentum, class<DamageType> DamageType,
@@ -51,7 +53,10 @@ simulated event PostBeginPlay()
 {
     super.PostBeginPlay();
     AddDefaultInventory(); //GameInfo calls it only for players, so we have to do it ourselves for AI.
+  //  RedDot = spawn(class'Arrow', self,,Location);
 }
+
+
 
 function addItem(Item item)
 {

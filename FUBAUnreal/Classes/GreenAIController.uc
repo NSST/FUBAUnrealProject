@@ -9,6 +9,7 @@ var Vector NextMoveLocation;
 var AnimNodeSlot FullBodyAnimSlot;
 var float AttackDistance;
 var int pos;
+var float distanceToPlayer;
 
 DefaultProperties
 {
@@ -199,9 +200,10 @@ auto state Moving
 
 	simulated  function Tick(float DeltaTime)
         {
+                GetEnemy();
 
                 if(Enem == none)
-                GetEnemy();
+                return;
                 
                 if (Enemy(Pawn).isDead)
                 GoToState('Patrolling1');
@@ -248,12 +250,6 @@ function strafe()
 
 }
 
-}
-
-function strafe()
-{
- `log("STATE ENDED!");
-//GoToState('Patrolling1');
 }
 
 //bot attact
@@ -308,19 +304,6 @@ function MoveToVector(float DeltaTime, Vector destination,float Speed)
                   moveToTarget(destination);
 }
 
-//test fuction
-function MoveAwayFromVector(float DeltaTime, Vector destination,float Speed)
-{
-
-                  local vector NewLocation;
-
-                  NewLocation = Pawn.Location;
-                  NewLocation +- normal(destination - Pawn.Location) * Speed * DeltaTime;
-                  Pawn.SetLocation(NewLocation);
-
-                  moveToTarget(Enem.Location);
-}
-
 //get enemy
  function GetEnemy()
 {
@@ -328,8 +311,8 @@ function MoveAwayFromVector(float DeltaTime, Vector destination,float Speed)
         local CyberPlayerController PC;
         foreach DynamicActors(class'CyberPlayerController',PC)
         {
-
-                 if(PC.Pawn != none)
+                distanceToPlayer = VSize(PC.Pawn.Location - Pawn.Location);
+                 if(distanceToPlayer < 500 && PC.Pawn != none)
                           Enem = PC.Pawn;
         }
 

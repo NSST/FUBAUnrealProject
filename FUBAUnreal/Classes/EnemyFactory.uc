@@ -7,6 +7,11 @@ var Enemy MySpawnedBot;
 var int ID;
 var () array<NavigationPoint> MyNavigationPoints;//for patrol route
 var () bool isSpecial;
+var () Arrow Arrow;
+
+var () bool RED_BOT;
+var () bool GREEN_BOT;
+var () bool BLUE_BOT;
 
 enum Type {
 
@@ -31,31 +36,19 @@ defaultproperties
 
 }
 
-function SpawnEnemy(int EnemyTypeRequested)
+function SpawnEnemy()
 {
 
-
-
-        switch(EnemyTypeRequested)
-        {
-                case Type.BLUE_BOT:
-                MySpawnedBot = spawn(class'BlueBot', self,,Location);
-                MySpawnedBot.SetOwner(self);
-                break;
-                
-                case Type.GREEN_BOT:
-                MySpawnedBot = spawn(class'GreenBot', self,,Location);
-                MySpawnedBot.SetOwner(self);
-                break;
-                
-                case Type.RED_BOT:
+        if(RED_BOT)
                 MySpawnedBot = spawn(class'RedBot', self,,Location);
-                MySpawnedBot.SetOwner(self);
-                break;
+        if(GREEN_BOT)
+                MySpawnedBot = spawn(class'GreenBot', self,,Location);
+        if(BLUE_BOT)
+                MySpawnedBot = spawn(class'BlueBot', self,,Location);
 
-        }
-
+        MySpawnedBot.SetOwner(self);
         MySpawnedBot.BotID = ID;
+        MySpawnedBot.registerArrow(Arrow);
 
 }
 
@@ -70,11 +63,11 @@ function EnemyDied()
 function SpawnEnemyRandomly()
 {
 
-        local int RandomNumber;
+     //   local int RandomNumber;
 
-        RandomNumber = Rand(3);
+     //   RandomNumber = Rand(3);
 
-        SpawnEnemy(RandomNumber);
+        SpawnEnemy();
 }
 
 function SpawnBoss()

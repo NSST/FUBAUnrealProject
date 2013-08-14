@@ -3,28 +3,52 @@ class BotAIController extends GameAIController;
 var vector targetDirection;
 var vector targetLocation;
 var float MovementSpeed;
-var Actor Enem;
+var Actor Target;
 var() Vector TempDest;
+
 var Vector NextMoveLocation;
 var AnimNodeSlot FullBodyAnimSlot;
 var float AttackDistance;
+
+var Arrow Rep;
+
+var float PerceptionDistance;
+var float distanceToPlayer;
 
 
 DefaultProperties
 {
 
-MovementSpeed=250.0
-AttackDistance=800;
-NavigationHandleClass=class'NavigationHandle'
-RemoteRole=ROLE_SimulatedProxy
-bPreciseDestination = False;
+        MovementSpeed=250.0
+        AttackDistance=800;
+        PerceptionDistance = 600;
+        NavigationHandleClass=class'NavigationHandle'
+        RemoteRole=ROLE_SimulatedProxy
+        bPreciseDestination = False;
 
 }
+
+event SeePlayer(Pawn SeenPlayer)
+
+{
+       Target = SeenPlayer;
+       distanceToPlayer = VSize(Target.Location - Pawn.Location);
+       
+        if (distanceToPlayer < PerceptionDistance)
+
+       {
+
+           GotoState('Moving');
+
+       }
+
+}
+
 //allow AI to work
 event Possess(Pawn inPawn, bool bVehicleTransition)
 {
-    super.Possess(inPawn, bVehicleTransition); 
-    Pawn.SetMovementPhysics();
+        super.Possess(inPawn, bVehicleTransition);
+        Pawn.SetMovementPhysics();
 }
 
 //function used to move to destination
@@ -39,14 +63,9 @@ function moveToTarget(vector aLocation) {
 	targetDirection *= 1000;
 }
 
-//fuction to die
-function Suicide()
-{
-        local UTProj_Rocket MyRocket;
-        MyRocket = spawn(class'UTProj_Rocket', self,, Pawn.Location);
-        MyRocket.Damage = 5;
-        MyRocket.Init(normal(Enem.Location - Pawn.Location));
-}
+
+
+
 
 //patrol from A to B
 auto state Patrolling1
@@ -55,11 +74,9 @@ auto state Patrolling1
   	simulated  function Tick(float DeltaTime)
         {
 
-        local Actor destination; 
+        local Actor destination;
+
         destination = EnemyFactory(Pawn.Owner).MyNavigationPoints[0];
-        
-        if(Enem == none)
-        GetEnemy();
 
          if( !ActorReachable(destination) )
 	{
@@ -93,18 +110,9 @@ auto state Patrolling1
                         GoToState('Patrolling2');
 
                 }
-                
-                if(VSize(Enem.Location - Pawn.Location) < 500.0 && VSize(Pawn.Owner.Location - Pawn.Location) < 800.0 )
-                {
-
-                        GoToState('Moving');
-                        //`log("ABC");
-
-                }
 
 
-                //Run animation
-                //SetFocalPoint(destination.Location);
+              //  Enemy(Pawn).MoveRedDot();
                 Enemy(Pawn).Run();
         }
 
@@ -119,9 +127,6 @@ state Patrolling2
 
         local Actor destination; 
         destination = EnemyFactory(Pawn.Owner);
-        
-        if(Enem == none)
-        GetEnemy();
 
          if( !ActorReachable(destination) )
 	{
@@ -156,21 +161,20 @@ state Patrolling2
 
                 }
 
-                if(VSize(Enem.Location - Pawn.Location) < 500.0 && !Enemy(Pawn).isDead)
-                        GoToState('Moving');
+             //   if(VSize(Target.Location - Pawn.Location) < 500.0 && !Enemy(Pawn).isDead)
+               //         GoToState('Moving');
 
 
 
 
-                //Run animation
-                //SetFocalPoint(destination.Location);
+             //   Enemy(Pawn).MoveRedDot();
                 Enemy(Pawn).Run();
         }
 
 }
 
 //path fiding for bot
-function bool FindNavMeshPath(Actor target)
+function bool FindNavMeshPath(Actor TargetActor)
 {
 
 	if ( NavigationHandle == None )
@@ -182,8 +186,8 @@ function bool FindNavMeshPath(Actor target)
 	NavigationHandle.PathGoalList = none;
 
 	// Create constraints
-	class'NavMeshPath_Toward'.static.TowardGoal( NavigationHandle,target );
-	class'NavMeshGoal_At'.static.AtActor( NavigationHandle, target );
+	class'NavMeshPath_Toward'.static.TowardGoal( NavigationHandle,TargetActor );
+	class'NavMeshGoal_At'.static.AtActor( NavigationHandle, TargetActor );
 
 	// Find path
 	return NavigationHandle.FindPath();
@@ -197,20 +201,20 @@ state Moving
 	simulated  function Tick(float DeltaTime)
         {
 
-                if(Enem == none)
-                GetEnemy();
-                
                 if (Enemy(Pawn).isDead)
                 GoToState('Patrolling1');
+                
+                if(Target == none)
+                return;
 
-                if(VSize(Enem.Location - Pawn.Location) > 200.0)
+                if(VSize(Target.Location - Pawn.Location) > 200.0)
                 {
 
-		if( !ActorReachable(Enem) )
+		if( !ActorReachable(Target) )
 		{
-			if( FindNavMeshPath(Enem) )
+			if( FindNavMeshPath(Target) )
 			{
-                                NavigationHandle.SetFinalDestination(Enem.Location);
+                                NavigationHandle.SetFinalDestination(Target.Location);
 			// move to the first node on the path
 			     if( NavigationHandle.GetNextMoveLocation( TempDest, Pawn.GetCollisionRadius()) )
 			      {
@@ -228,14 +232,14 @@ state Moving
 			else
 			{
 				//give up because the nav mesh failed to find a path
-				`warn("FindNavMeshPath failed to find a path to"@ Enem);
-				Enem = None;
+				`warn("FindNavMeshPath failed to find a path to"@ Target);
+				Target = None;
 			}   
 		}
 		else
 		{
 			// then move directly to the actor
-			MoveToVector(DeltaTime,Enem.Location,300.0);
+			MoveToVector(DeltaTime,Target.Location,300.0);
 		}
 		
 		Enemy(Pawn).Run();
@@ -244,22 +248,24 @@ state Moving
                 else
                 {
 
-                moveToTarget(Enem.Location);
+                moveToTarget(Target.Location);
 
                 }
 
 
 
 
-                if(VSize(Enem.Location - Pawn.Location) > 400.0)
+                if(VSize(Target.Location - Pawn.Location) > 400.0)
                 {
                   SetTimer(0.5, true, 'PawnFire');
                 }
-                
+
                 if(VSize(Pawn.Owner.Location - Pawn.Location) > 900.0)
                 {
                        GoToState('Patrolling1');
                 }
+                
+             //  Enemy(Pawn).MoveRedDot();
 
 
         }
@@ -277,11 +283,11 @@ function PawnFire()
                 return;
 
         if (RedBot(Pawn) != none)
-                RedBot(Pawn).Attack(Enem);
+                RedBot(Pawn).Attack(Target);
         if (BlueBot(Pawn) != none)
-                BlueBot(Pawn).Attack(Enem);
+                BlueBot(Pawn).Attack(Target);
         if (GreenBot(Pawn) != none)
-                GreenBot(Pawn).Attack(Enem);
+                GreenBot(Pawn).Attack(Target);
 
 }
 
@@ -308,19 +314,6 @@ function MoveToVector(float DeltaTime, Vector destination,float Speed)
                   moveToTarget(destination);
 }
 
-//test fuction
-function MoveAwayFromVector(float DeltaTime, Vector destination,float Speed)
-{
-
-                  local vector NewLocation;
-
-                  NewLocation = Pawn.Location;
-                  NewLocation +- normal(destination - Pawn.Location) * Speed * DeltaTime;
-                  Pawn.SetLocation(NewLocation);
-
-                  moveToTarget(Enem.Location);
-}
-
 //get enemy
  function GetEnemy()
 {
@@ -330,7 +323,9 @@ function MoveAwayFromVector(float DeltaTime, Vector destination,float Speed)
         {
 
                  if(PC.Pawn != none)
-                          Enem = PC.Pawn;
+                          Target = PC.Pawn;
+
+
         }
 
 }

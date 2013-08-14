@@ -10,7 +10,7 @@ HitLocation, vector HitNormal)
         if (AwesomePawn(Other) != none)
 
         {
-                `log(' Added ');
+
                 AwesomePawn(Other).addItem(self);
                 Destroy();
 

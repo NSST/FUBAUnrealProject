@@ -23,9 +23,11 @@ var vector targetDirection;
 var vector targetLocation;
 var AnimNodeSlot FullBodyAnimSlot;
 var() SkeletalMeshComponent WeaponSkeletalMesh;
+var() Arrow DirectionalArrow;
 var int HP;
 var float AttackDistance;
 var bool isDead;
+var vector loc;
 
 //compute health bar
 event TakeDamage(int DamageAmount, Controller EventInstigator,
@@ -62,7 +64,14 @@ defaultproperties()
 replication
 {
         if(bNetDirty)
-        Enemy,HP,BotID,FullBodyRep,isDead;
+        Enemy,HP,BotID,FullBodyRep,isDead,DirectionalArrow;
+}
+
+function registerArrow(Arrow ctor)
+{
+        DirectionalArrow = ctor;
+      //  DirectionalArrow.bStatic = false;
+        `log(DirectionalArrow);
 }
 //kill the player
 function Killed()
@@ -140,6 +149,13 @@ reliable client function ClientPlayAnim(Name NewAnimSlot, Name NewAnimName, floa
 
 }
 
+reliable client function MoveRedDot()
+{
+        loc = DirectionalArrow.Location;
+        loc.X = Location.X;
+        loc.Y = Location.Y;
+        DirectionalArrow.SetLocation(loc);
+}
 
 simulated event ReplicatedEvent(name VarName)
 
@@ -148,9 +164,12 @@ simulated event ReplicatedEvent(name VarName)
       //  if ( VarName == 'FullBodyRep')
 
      //   {
+      // DirectionalArrow.Location.Z = 600;
 
         ClientPlayAnim('FullBodyAnimSlot', FullBodyRep.AnimName, FullBodyRep.Rate, FullBodyRep.BlendInTime, FullBodyRep.BlendOutTime, FullBodyRep.bLoop, FullBodyRep.Pawn);
+        
 
+        MoveRedDot();
      //   }
 
 }

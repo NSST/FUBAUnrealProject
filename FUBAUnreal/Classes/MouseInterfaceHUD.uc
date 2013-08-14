@@ -68,10 +68,11 @@ function DrawHUD()
         playerHealth = CyberPlayerController.Pawn.Health;
 
         Canvas.Font = class'Engine'.static.GetLargeFont();
+
         Canvas.SetDrawColor(255, 255, 255); // White
         Canvas.SetPos(1000, 675);
-        Canvas.DrawText(playerHealth);
-        
+
+
         if(playerHealth < 10)
         {
         Canvas.SetDrawColor(255, 0, 0); // Red
@@ -85,8 +86,9 @@ function DrawHUD()
         Canvas.SetDrawColor(0, 255, 0); // Green
         }
 
-        Canvas.SetPos(300, 675);
+        Canvas.SetPos(390, 585);
         Canvas.DrawRect(6 * playerHealth, 30);
+
 
         if(AwesomeGameReplicationInfo(WorldInfo.GRI) != none)
         {
