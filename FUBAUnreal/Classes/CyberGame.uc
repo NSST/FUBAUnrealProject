@@ -3,8 +3,6 @@ class CyberGame extends UTDeathmatch;
 //Hold all the factories
 var array<EnemyFactory> EnemySpawners;
 var array<ItemFactory> ItemSpawners;
-var MU_Minimap GameMinimap;
-//var SceneCapture2DActor Camera;
 
 //Hold wave information
 var int EnemiesLeft;

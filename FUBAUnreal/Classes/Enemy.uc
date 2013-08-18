@@ -28,6 +28,8 @@ var int HP;
 var float AttackDistance;
 var bool isDead;
 var vector loc;
+var String BroadcastMessage;
+
 
 //compute health bar
 event TakeDamage(int DamageAmount, Controller EventInstigator,
@@ -38,17 +40,9 @@ optional TraceHitInfo HitInfo, optional Actor DamageCauser)
         if(isDead)
         return;
 
-        HP -= 10;
+       // HP -= 10;
 
-        if(HP <= 0 && EnemyFactory(Owner) != none)
-        {
-                //Score point
-                 if(EventInstigator != none && EventInstigator.PlayerReplicationInfo != none)
-                        WorldInfo.Game.ScoreObjective(EventInstigator.PlayerReplicationInfo, 1);
-                
-                //
-                 Killed();
-        }
+
 
         
 
@@ -64,15 +58,19 @@ defaultproperties()
 replication
 {
         if(bNetDirty)
-        Enemy,HP,BotID,FullBodyRep,isDead,DirectionalArrow;
+        Enemy,HP,BotID,FullBodyRep,isDead,DirectionalArrow,BroadcastMessage;
+}
+
+function ResetMessage()
+{
+        BroadcastMessage = "";
 }
 
 function registerArrow(Arrow ctor)
 {
         DirectionalArrow = ctor;
-      //  DirectionalArrow.bStatic = false;
-        `log(DirectionalArrow);
 }
+
 //kill the player
 function Killed()
 {

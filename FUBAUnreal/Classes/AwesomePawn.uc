@@ -46,14 +46,13 @@ replication
 
 function AddDefaultInventory()
 {
-    InvManager.CreateInventory(class'AwesomeWeapon_ShockRifle');
+    InvManager.CreateInventory(class'AwesomeWeapon_LinkGun');
 }
 
 simulated event PostBeginPlay()
 {
     super.PostBeginPlay();
     AddDefaultInventory(); //GameInfo calls it only for players, so we have to do it ourselves for AI.
-  //  RedDot = spawn(class'Arrow', self,,Location);
 }
 
 

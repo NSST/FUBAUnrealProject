@@ -1,5 +1,44 @@
 class BlueBot extends Enemy;
 
+event TakeDamage(int DamageAmount, Controller EventInstigator,
+vector HitLocation, vector Momentum, class<DamageType> DamageType,
+optional TraceHitInfo HitInfo, optional Actor DamageCauser)
+{
+        local int Damage;
+        
+        //default damage
+        Damage = 10;
+
+        //If blue weapon damages this bot
+        if (AwesomeWeapon_ShockRifle(DamageCauser) != none)
+        {
+                BroadcastMessage = "ABSORBED!";
+                Damage = 5;
+        }
+
+        //AwesomeWeapon_RocketLauncher fires UTProj_Rocket
+        //If red weapon damages this bot
+        if (UTProj_Rocket(DamageCauser) != none)
+        {
+                BroadcastMessage = "CRITICAL HIT!";
+                Damage = 50;
+        }
+
+         HP -= Damage;
+
+        if(HP <= 0 && EnemyFactory(Owner) != none)
+        {
+                //Score point
+                 if(EventInstigator != none && EventInstigator.PlayerReplicationInfo != none)
+                        WorldInfo.Game.ScoreObjective(EventInstigator.PlayerReplicationInfo, 1);
+
+                 Killed();
+        }
+        
+
+        SetTimer(1, true, 'ResetMessage');
+
+}
 DefaultProperties
 {
 
@@ -27,7 +66,7 @@ DefaultProperties
     End Object
 
     WeaponSkeletalMesh=MyWeaponSkeletalMesh
-    ControllerClass=class'BotAIController'
+    ControllerClass=class'AggressiveAIController'
 
     bBlockActors=false
     bJumpCapable=false

@@ -12,12 +12,14 @@ var () Arrow Arrow;
 var () bool RED_BOT;
 var () bool GREEN_BOT;
 var () bool BLUE_BOT;
+var () bool WHITE_BOT;
 
 enum Type {
 
 	BLUE_BOT,
 	GREEN_BOT,
 	RED_BOT,
+	WHITE_BOT,
 	BOSS_TYPE,
 
 };
@@ -45,6 +47,8 @@ function SpawnEnemy()
                 MySpawnedBot = spawn(class'GreenBot', self,,Location);
         if(BLUE_BOT)
                 MySpawnedBot = spawn(class'BlueBot', self,,Location);
+        if(WHITE_BOT)
+                MySpawnedBot = spawn(class'WhiteBot', self,,Location);
 
         MySpawnedBot.SetOwner(self);
         MySpawnedBot.BotID = ID;

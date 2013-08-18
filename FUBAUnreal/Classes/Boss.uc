@@ -29,7 +29,7 @@ DefaultProperties
     End Object
 
     WeaponSkeletalMesh=MyWeaponSkeletalMesh
-    ControllerClass=class'GreenAIController'
+    ControllerClass=class'DefensiveAIController'
 
     bBlockActors=false
     bJumpCapable=false

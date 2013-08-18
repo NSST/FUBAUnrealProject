@@ -1,6 +1,51 @@
 class GreenBot extends Enemy;
 
-var Material mat;
+event TakeDamage(int DamageAmount, Controller EventInstigator,
+vector HitLocation, vector Momentum, class<DamageType> DamageType,
+optional TraceHitInfo HitInfo, optional Actor DamageCauser)
+{
+        local int Damage;
+
+        //default damage
+        Damage = 10;
+
+        //AwesomeWeapon_GreenLinkGUn fires GreenProjectile
+        //What happens when damaged by green weapon
+        if (LinkGun_GreenProjectile(DamageCauser) != none)
+        {
+
+                BroadcastMessage = "ABSORBED!";
+                Damage = 5;
+
+        }
+
+        //AwesomeWeapon_LinkGUn fires LinkPlasma
+        //What happens when damaged by white weapon
+        if (LinkGun_WhiteProjectile(DamageCauser) != none)
+        {
+
+                BroadcastMessage = "CRITICAL HIT!";
+                Damage = 50;
+
+        }
+
+        HP -= Damage;
+
+        if(HP <= 0 && EnemyFactory(Owner) != none)
+        {
+                //Score point
+                 if(EventInstigator != none && EventInstigator.PlayerReplicationInfo != none)
+                        WorldInfo.Game.ScoreObjective(EventInstigator.PlayerReplicationInfo, 1);
+
+                 Killed();
+        }
+        
+
+        SetTimer(1, true, 'ResetMessage');
+
+
+}
+
 DefaultProperties
 {
 
@@ -28,7 +73,7 @@ DefaultProperties
     End Object
 
     WeaponSkeletalMesh=MyWeaponSkeletalMesh
-    ControllerClass=class'GreenAIController'
+    ControllerClass=class'DefensiveAIController'
 
     bJumpCapable=false
     bCanJump=false

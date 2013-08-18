@@ -1,7 +1,8 @@
 class AwesomeGameReplicationInfo extends UTGameReplicationInfo;
 
-var vector EnemyLocation[4];
-var int EnemyHealth[4];
+var vector EnemyLocation[10];
+var int EnemyHealth[10];
+var String  EnemyMessage[10];
 
 defaultproperties
 {
@@ -12,7 +13,7 @@ defaultproperties
 replication
 {
         if(bNetDirty)
-        EnemyLocation,EnemyHealth;
+        EnemyLocation,EnemyHealth,EnemyMessage;
 }
 
 

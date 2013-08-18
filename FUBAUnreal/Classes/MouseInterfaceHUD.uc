@@ -62,7 +62,8 @@ function DrawHUD()
         local CyberPlayerController CyberPlayerController;
         local int playerHealth;
         local vector ScreenPos;
-        local int i;
+        local String message;
+        local Enemy E;
 
         CyberPlayerController = CyberPlayerController(PlayerOwner);
         playerHealth = CyberPlayerController.Pawn.Health;
@@ -93,13 +94,19 @@ function DrawHUD()
         if(AwesomeGameReplicationInfo(WorldInfo.GRI) != none)
         {
 
-                 for (i = 0 ; i < 3 ; i++)
-                 {
-                 ScreenPos = Canvas.Project(AwesomeGameReplicationInfo(WorldInfo.GRI).EnemyLocation[i]);
-                 Canvas.SetPos(ScreenPos.X ,ScreenPos.Y - 20);
-                 Canvas.SetDrawColor(255, 0, 0);
-                 Canvas.DrawRect(0.5 * AwesomeGameReplicationInfo(WorldInfo.GRI).EnemyHealth[i], 5);
-                 }
+
+                 
+                //Find all Enemy Classes
+                foreach DynamicActors(class'Enemy', E)
+                {
+                ScreenPos = Canvas.Project(E.Location);
+                Canvas.SetPos(ScreenPos.X ,ScreenPos.Y - 20);
+                Canvas.SetDrawColor(255, 0, 0);
+                
+                message = E.BroadcastMessage;
+                Canvas.DrawText(message);
+                }
+
 
 
         }

@@ -14,7 +14,7 @@ function Init2(CyberPlayerController PC)
 	//Start and load the SWF Movie
 	Start();
 	Advance(0.f);
-	
+
 	ThisWorld = GetPC().WorldInfo;
 
 	// Register the HUD with the PlayerController
@@ -175,15 +175,27 @@ args[1] = asval;
 function UpgradeWeapon(int grade)
 {
 
-local Pawn player;
+        local Pawn player;
 
-player = PlayerOwner.Pawn;
+        player = PlayerOwner.Pawn;
 
 
-if(AwesomeWeapon(player.Weapon) != none)
-AwesomeWeapon(player.Weapon).UpgradeWeapon(grade);
-else
-AwesomeWeapon_ShockRifle(player.Weapon).UpgradeWeapon(grade);
+        `log(player.Weapon);
+        if(AwesomeWeapon_LinkGun(player.Weapon) != none)
+        {
+                AwesomeWeapon_LinkGun(player.Weapon).UpgradeWeapon(grade);
+                `log('UPGGRADED ');
+        }
+        
+        if(AwesomeWeapon_RocketLauncher(player.Weapon) != none)
+        AwesomeWeapon_RocketLauncher(player.Weapon).UpgradeWeapon(grade);
+
+        if(AwesomeWeapon_GreenLinkGun(player.Weapon) != none)
+        AwesomeWeapon_GreenLinkGun(player.Weapon).UpgradeWeapon(grade);
+        
+        if(AwesomeWeapon_ShockRifle(player.Weapon) != none)
+        AwesomeWeapon_ShockRifle(player.Weapon).UpgradeWeapon(grade);
+
 }
 
 function showItems()

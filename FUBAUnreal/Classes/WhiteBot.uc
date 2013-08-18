@@ -1,4 +1,4 @@
-class RedBot extends Enemy;
+class WhiteBot extends Enemy;
 
 event TakeDamage(int DamageAmount, Controller EventInstigator,
 vector HitLocation, vector Momentum, class<DamageType> DamageType,
@@ -9,15 +9,18 @@ optional TraceHitInfo HitInfo, optional Actor DamageCauser)
         //default damage
         Damage = 10;
 
-        //If blue weapon damages this bot
-        if (AwesomeWeapon_ShockRifle(DamageCauser) != none)
+        `log(DamageCauser);
+        //AwesomeWeapon_GreenLinkGUn fires GreenProjectile
+        //What happens when damaged by green weapon
+        if (LinkGun_GreenProjectile(DamageCauser) != none)
         {
                 BroadcastMessage = "CRITICAL HIT!";
                 Damage = 50;
         }
 
-        //AwesomeWeapon_RocketLauncher fires UTProj_Rocket
-        if (UTProj_Rocket(DamageCauser) != none)
+        //AwesomeWeapon_LinkGUn fires LinkGun_WhiteProjectile
+        //What happens when damaged by white weapon
+        if (LinkGun_WhiteProjectile(DamageCauser) != none)
         {
                 BroadcastMessage = "ABSORBED!";
                 Damage = 5;
@@ -37,8 +40,8 @@ optional TraceHitInfo HitInfo, optional Actor DamageCauser)
 
         SetTimer(1, true, 'ResetMessage');
 
-}
 
+}
 DefaultProperties
 {
 
@@ -83,33 +86,35 @@ DefaultProperties
 
 function Attack(Actor target)
 {
-        local RedProjectile projectile;
+        local RedProjectile Rprojectile;
+        local GreenProjectile Gprojectile;
+        local BlueProjectile Bprojectile;
         local Vector temp;
 
         //Bullet Lane 1
-        projectile = spawn(class' RedProjectile', self,, Location);
-        projectile.Damage = 2;
+        Rprojectile = spawn(class' RedProjectile', self,, Location);
+        Rprojectile.Damage = 2;
         
         temp = target.Location;
         temp.X = temp.X + 100;
         temp.Y = temp.Y + 100;
-        projectile.Init(normal(temp - Location));
+        Rprojectile.Init(normal(temp - Location));
         
         //Bullet Lane 2
-        projectile = spawn(class' RedProjectile', self,, Location);
-        projectile.Damage = 2;
-        
+        Gprojectile = spawn(class' GreenProjectile', self,, Location);
+        Gprojectile.Damage = 2;
+
         temp = target.Location;
         temp.X = temp.X - 100;
         temp.Y = temp.Y - 100;
-        projectile.Init(normal(temp - Location));
+        Gprojectile.Init(normal(temp - Location));
         
 
         //Main Lane
-        projectile = spawn(class' RedProjectile', self,, Location);
-        projectile.Damage = 2;
+        Bprojectile = spawn(class' BlueProjectile', self,, Location);
+        Bprojectile.Damage = 2;
         
-        projectile.Init(normal(target.Location - Location));
+        Bprojectile.Init(normal(target.Location - Location));
         
 
 }

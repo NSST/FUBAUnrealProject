@@ -10,6 +10,7 @@ simulated function UpgradeWeapon(int grade)
 
         FireInterval[0] = FireRates[grade];
         ServerUpgradeWeapon(grade);
+        `log('UGANDA');
 }
 
 replication
@@ -25,7 +26,7 @@ defaultproperties
         FireRates(1)=1.0
         FireRates(2)=0.5
         FireRates(3)=0.3
-        FireRates(4)=0.1
+        FireRates(4)=0.3
 
         FireInterval[0] = 0.5
 }
