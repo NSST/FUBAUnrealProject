@@ -1,5 +1,23 @@
 class Boss extends Enemy;
+event TakeDamage(int DamageAmount, Controller EventInstigator,
+vector HitLocation, vector Momentum, class<DamageType> DamageType,
+optional TraceHitInfo HitInfo, optional Actor DamageCauser)
+{
+        local int Damage;
 
+        //default damage
+        Damage = 10;
+
+        HP -= Damage;
+
+        if(HP <= 0 && EnemyFactory(Owner) != none)
+        {
+                isDead = true;
+                setHidden(true);
+                HP = 100;
+        }
+
+}
 DefaultProperties
 {
 
@@ -29,7 +47,7 @@ DefaultProperties
     End Object
 
     WeaponSkeletalMesh=MyWeaponSkeletalMesh
-    ControllerClass=class'DefensiveAIController'
+    ControllerClass=class'AggressiveAIController'
 
     bBlockActors=false
     bJumpCapable=false

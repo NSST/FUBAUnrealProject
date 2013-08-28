@@ -9,6 +9,11 @@ simulated function SpawnFlightEffects()
 	}
 }
 
+simulated function Explode(vector HitLocation, vector HitNormal)
+{
+super.Explode(HitLocation,HitNormal);
+}
+
 simulated event HitWall(vector HitNormal, actor Wall, PrimitiveComponent WallComp)
 {
 	Velocity = MirrorVectorByNormal(Velocity, HitNormal);

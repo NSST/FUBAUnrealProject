@@ -168,6 +168,22 @@ args[1] = asval;
                 case 1:
                 GetVariableObject("root").Invoke("showSlot2",args );
                 break;
+                
+                case 2:
+                GetVariableObject("root").Invoke("showSlot3",args );
+                break;
+
+                case 3:
+                GetVariableObject("root").Invoke("showSlot4",args );
+                break;
+                
+                case 4:
+                GetVariableObject("root").Invoke("showSlot5",args );
+                break;
+                
+                case 5:
+                GetVariableObject("root").Invoke("showSlot6",args );
+                break;
         }
 
 }
@@ -180,7 +196,7 @@ function UpgradeWeapon(int grade)
         player = PlayerOwner.Pawn;
 
 
-        `log(player.Weapon);
+
         if(AwesomeWeapon_LinkGun(player.Weapon) != none)
         {
                 AwesomeWeapon_LinkGun(player.Weapon).UpgradeWeapon(grade);
@@ -219,6 +235,7 @@ function showItems()
 }
 function RetrieveInputMessage(optional String message)
 {
+        `log(message);
         messageHolder = message;
 }
 function UpdateChatLog(String message)

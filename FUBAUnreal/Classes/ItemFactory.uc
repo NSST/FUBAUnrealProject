@@ -28,8 +28,6 @@ defaultproperties
 function SpawnItem(int EnemyTypeRequested)
 {
 
-
-
         switch(EnemyTypeRequested)
         {
                 case Type.ARMOR_TYPE:
@@ -44,6 +42,33 @@ function SpawnItem(int EnemyTypeRequested)
 
 
         }
+
+}
+
+function GiveItem(String ItemName,Pawn P)
+{
+        local Item i;
+
+        if(ItemName == "GreenMedal")
+        {
+        `log("TINK!");
+        i =  spawn(class'GreenMedalItem',,,P.Location);
+        }
+        else
+        {
+        if(ItemName == "RedMedal")
+        {
+        `log("TINK!");
+        i =  spawn(class'RedMedalItem',,,P.Location);
+        }
+        }
+        
+
+
+        
+        
+
+
 
 }
 

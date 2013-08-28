@@ -207,7 +207,7 @@ state Moving
                 GoToState('Patrolling1');
                 
                 if(Target == none)
-                return;
+                GoToState('Patrolling1');
 
                 if(VSize(Target.Location - Pawn.Location) > 200.0)
                 {
@@ -267,15 +267,7 @@ state Moving
                        GoToState('Patrolling1');
                 }
 
-                
-                if(AwesomeGameReplicationInfo(WorldInfo.GRI) != none)
-                {
-                  
-                  AwesomeGameReplicationInfo(WorldInfo.GRI).EnemyLocation[Enemy(Pawn).BotID] = Enemy(Pawn).Location;
-                  //AwesomeGameReplicationInfo(WorldInfo.GRI).EnemyHealth[Enemy(Pawn).BotID] = Enemy(Pawn).HP;
-                  //AwesomeGameReplicationInfo(WorldInfo.GRI).Message[Enemy(Pawn).BotID] = Enemy(Pawn).HP;
 
-                }
 
         }
 

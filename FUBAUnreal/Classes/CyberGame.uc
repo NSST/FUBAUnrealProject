@@ -1,4 +1,4 @@
-class CyberGame extends UTDeathmatch;
+class CyberGame extends UTGame;
 
 //Hold all the factories
 var array<EnemyFactory> EnemySpawners;
@@ -6,6 +6,26 @@ var array<ItemFactory> ItemSpawners;
 
 //Hold wave information
 var int EnemiesLeft;
+
+event PlayerController Login(string Portal, string Options, const UniqueNetId UniqueId, out string ErrorMessage)
+{
+    local PlayerController PC;
+   // local CyberPlayerController CPC;
+    local string PlayerType;
+    local string Username;
+    local string ItemString;
+
+    PC = Super.Login(Portal, Options, UniqueId, ErrorMessage);
+
+    PlayerType = ParseOption(Options, "PlayerType");
+    Username = ParseOption(Options, "Username");
+
+
+     CyberPlayerController(PC).SetPlayerType(Username,PlayerType);
+
+    return PC;
+}
+
 
 
 //Scoring
@@ -26,6 +46,7 @@ function ScoreObjective(PlayerReplicationInfo Scorer, Int Score)
 event InitGame( string Options, out string ErrorMessage )
 {
     Super.InitGame(Options, ErrorMessage);
+    `log("**********" @ Options);
     BroadcastHandler = spawn(BroadcastHandlerClass);
 }
 

@@ -60,13 +60,19 @@ event PostRender()
 function DrawHUD()
 {
         local CyberPlayerController CyberPlayerController;
+        local AwesomePawn MyPawn;
         local int playerHealth;
         local vector ScreenPos;
         local String message;
         local Enemy E;
 
         CyberPlayerController = CyberPlayerController(PlayerOwner);
-        playerHealth = CyberPlayerController.Pawn.Health;
+        MyPawn = AwesomePawn(CyberPlayerController.Pawn);
+
+        if(MyPawn.bPKMode)
+        playerHealth = MyPawn.Health;
+        else
+        playerHealth = MyPawn.HP;
 
         Canvas.Font = class'Engine'.static.GetLargeFont();
 
@@ -95,7 +101,7 @@ function DrawHUD()
         {
 
 
-                 
+
                 //Find all Enemy Classes
                 foreach DynamicActors(class'Enemy', E)
                 {
@@ -103,9 +109,21 @@ function DrawHUD()
                 Canvas.SetPos(ScreenPos.X ,ScreenPos.Y - 20);
                 Canvas.SetDrawColor(255, 0, 0);
                 
-                message = E.BroadcastMessage;
-                Canvas.DrawText(message);
+
+
+                if(!E.isDead && E.HP > 0)
+                {
+                
+                 message = E.BroadcastMessage;
+                 Canvas.DrawText(message);
+
+                 Canvas.SetPos(ScreenPos.X ,ScreenPos.Y - 20);
+                 Canvas.SetDrawColor(255, 0, 0);
+                 Canvas.DrawRect(0.5 * E.HP, 5);
                 }
+
+
+                 }
 
 
 
@@ -184,8 +202,7 @@ function Vector GetMouseWorldLocation()
 
 exec function Send()
 {
-      //  HudMovie. RequestInputMessage();
-      //  CyberPlayerController(PlayerOwner).SendTextToServer(CyberPlayerController(PlayerOwner), HudMovie.messageHolder);
+
        HudMovie.getFocus();
        HudMovie.checkFocus();
 

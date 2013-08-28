@@ -10,7 +10,7 @@ simulated function UpgradeWeapon(int grade)
 
         FireInterval[0] = FireRates[grade];
         ServerUpgradeWeapon(grade);
-        `log('UGANDA');
+
 }
 
 replication

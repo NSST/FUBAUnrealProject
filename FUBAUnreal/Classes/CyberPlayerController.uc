@@ -44,11 +44,24 @@ var bool bAttack;
 var SceneCapture2DActor Camera;
 var () array<Arrow> Arrows;//for patrol route
 
+var String PlayerType;
+var String itemString;
+var bool PlayerInitialized;
+
 replication
 {
         if(bNetDirty)
-        CursorDirection;
+        PlayerType,itemString,CursorDirection;
 }
+
+simulated function SetPlayerType(String UName,String type)
+{
+
+        PlayerType = type;
+        PlayerReplicationInfo.PlayerName = Uname;
+
+}
+
 
 defaultproperties
 {
@@ -74,8 +87,8 @@ simulated function PostBeginPlay()
 function registerHUD(STGFxHUD hud)
 {
         CyberHUD = hud;
-}
 
+}
 
 
 simulated event GetPlayerViewPoint(out vector out_Location, out
@@ -107,7 +120,11 @@ event PlayerTick( float deltaTime )
 	super.PlayerTick( deltaTime );
 	FaceCursor(MouseHitWorldLocation);
 	Pawn.ClientSetRotation(Rotator(MouseHitWorldLocation - Pawn.Location));
+	
+	if(!PlayerInitialized)
+	PlayerInitialized = AwesomePawn(Pawn).init(PlayerType);
 
+       // `log(PlayerType);
 }
 
 
@@ -154,7 +171,6 @@ state PlayerWalking
 	if(bRightMousePressed)
         {
         bAttack = true;
-       // SendTextToServer(self, "HELLO WORLD!");
         Fire();
         }
 
@@ -191,7 +207,6 @@ function Fire()
         Pawn.StartFire(0);
 
         bAttack = false;
-        //ServerFire(MouseHitWorldLocation);
 
 }
 
@@ -218,6 +233,7 @@ reliable server function ServerFire(Vector loc)
 exec function SendTextToServer(CyberPlayerController PC, String TextToSend)
 {
 	`Log(Self$":: Client wants to send '"$TextToSend$"' to the server.");
+//	TextToSend = "HOLLA" @ TextToSend;
 	ServerReceiveText(PC, TextToSend);
 }
 

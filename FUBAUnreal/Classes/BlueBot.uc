@@ -25,18 +25,8 @@ optional TraceHitInfo HitInfo, optional Actor DamageCauser)
         }
 
          HP -= Damage;
-
-        if(HP <= 0 && EnemyFactory(Owner) != none)
-        {
-                //Score point
-                 if(EventInstigator != none && EventInstigator.PlayerReplicationInfo != none)
-                        WorldInfo.Game.ScoreObjective(EventInstigator.PlayerReplicationInfo, 1);
-
-                 Killed();
-        }
-        
-
-        SetTimer(1, true, 'ResetMessage');
+         
+        super.TakeDamage(DamageAmount,EventInstigator,HitLocation,Momentum,DamageType);
 
 }
 DefaultProperties

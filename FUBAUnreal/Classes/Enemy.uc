@@ -29,7 +29,7 @@ var float AttackDistance;
 var bool isDead;
 var vector loc;
 var String BroadcastMessage;
-
+var SoundCue soundSample;
 
 //compute health bar
 event TakeDamage(int DamageAmount, Controller EventInstigator,
@@ -40,7 +40,19 @@ optional TraceHitInfo HitInfo, optional Actor DamageCauser)
         if(isDead)
         return;
 
-       // HP -= 10;
+
+
+        if(HP <= 0 && EnemyFactory(Owner) != none)
+        {
+                //Score point
+             if(EventInstigator != none && EventInstigator.PlayerReplicationInfo != none)
+                   WorldInfo.Game.ScoreObjective(EventInstigator.PlayerReplicationInfo, 1);
+
+                 Killed();
+        }
+        
+
+        SetTimer(1, true, 'ResetMessage');
 
 
 
@@ -149,6 +161,9 @@ reliable client function ClientPlayAnim(Name NewAnimSlot, Name NewAnimName, floa
 
 reliable client function MoveRedDot()
 {
+        if(DirectionalArrow == none)
+        return;
+
         loc = DirectionalArrow.Location;
         loc.X = Location.X;
         loc.Y = Location.Y;
@@ -159,17 +174,10 @@ simulated event ReplicatedEvent(name VarName)
 
 {
 
-      //  if ( VarName == 'FullBodyRep')
-
-     //   {
-      // DirectionalArrow.Location.Z = 600;
-
         ClientPlayAnim('FullBodyAnimSlot', FullBodyRep.AnimName, FullBodyRep.Rate, FullBodyRep.BlendInTime, FullBodyRep.BlendOutTime, FullBodyRep.bLoop, FullBodyRep.Pawn);
         
 
         MoveRedDot();
-     //   }
-
 }
 //initialize animation
 simulated event PostInitAnimTree(SkeletalMeshComponent SkelComp)
